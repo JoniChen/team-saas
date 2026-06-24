@@ -1,15 +1,20 @@
-from sqlalchemy import Column, String, ForeignKey
-from sqlalchemy.orm import relationship
-from app.db.base import Base
 import uuid
+
+from sqlalchemy import Column, DateTime, ForeignKey, String
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
+from app.db.base import Base
 
 
 class Project(Base):
     __tablename__ = "projects"
 
-    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
-
-    organization_id = Column(String, ForeignKey("organizations.id"))
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"))
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
     organization = relationship("Organization")

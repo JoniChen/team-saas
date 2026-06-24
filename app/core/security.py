@@ -15,23 +15,23 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 
-def hash_password(password: str):
+def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
-def verify_password(password: str, hashed: str):
+def verify_password(password: str, hashed: str) -> bool:
     return pwd_context.verify(password, hashed)
 
-def create_access_token(data: dict):
+def create_access_token(data: dict) -> str:
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM) 
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
-):
+) -> User:
     token = credentials.credentials
 
     try:

@@ -1,17 +1,17 @@
- # Python
-  __pycache__/
-  *.py[cod]
-  *$py.class
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 
-  # Virtual environments
-  venv/
-  .venv/
+# Virtual environments
+venv/
+.venv/
 
-  # Environment variables
-  .env
+# Environment variables
+.env
 
-  # Tooling / local files
-  .pytest_cache/
-  .mypy_cache/
-  .ruff_cache/
-  .DS_Store
+# Tooling / local files
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store

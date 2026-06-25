@@ -1,3 +1,5 @@
+from typing import cast
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -32,7 +34,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)) -> dict:
     if not db_user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    if not verify_password(user.password, db_user.password_hash):
+    if not verify_password(user.password, cast(str, db_user.password_hash)):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token({"user_id": str(db_user.id)})
